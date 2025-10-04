@@ -5,7 +5,7 @@ export async function register(req, res, next) {
   console.log("Body ricevuto:", req.body);
 
   try {
-    const { name, email, password} = req.body;
+    const { email, password} = req.body;
     console.log(req.file);
 
     const existing = await User.findOne({ email });
@@ -14,7 +14,6 @@ export async function register(req, res, next) {
     }
 
     const newUser = new User({
-      name,
       email,
       password,
     });
@@ -28,7 +27,6 @@ export async function register(req, res, next) {
       token,
       author: {
         id: newUser._id,
-        name: newUser.name,
         email: newUser.email
       },
     });
@@ -45,7 +43,7 @@ export async function login(req, res, next) {
   const userEmail = await User.findOne({ email })
 
   if (userEmail) {
-    if (await user.comparePassword(password)) {
+    if (await userEmail.comparePassword(password)) {
       const jwt = await signJwt(
         {
           id: userEmail._id,

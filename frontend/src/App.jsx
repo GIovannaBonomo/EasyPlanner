@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Home from './pages/Home';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
+import Register from './components/Register';
 
 function App() {
 
@@ -17,6 +18,8 @@ function App() {
       <Routes>
         <Route path='/' element={isAuth ? <Navigate to="/home"/> : <Login setIsAuth={setIsAuth}/>}/>
         <Route path='/home' element={isAuth ? <Home/> : <Navigate to="/"/>}/> 
+        <Route path='/login' element={isAuth ? <Navigate to="/home"/> : <Login setIsAuth={setIsAuth}/>}/>
+        <Route path='/register' element={<Register/>}/>
       </Routes>
       <Footer/>
     </BrowserRouter>

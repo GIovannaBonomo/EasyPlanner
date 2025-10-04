@@ -4,6 +4,8 @@ import express, { Router } from 'express';
 import userRouter from './routes/user.js';
 import { connect } from 'mongoose';
 import { connectDB } from './db.js';
+import clientRouter from './routes/client.js';
+import serviceRouter from './routes/service.js';
 
 
 const port = process.env.PORT || 5000;
@@ -13,6 +15,8 @@ server.use(cors());
 server.use(express.json()); 
 
 server.use('/user', userRouter);
+server.use('/client', clientRouter)
+server.use('/service', serviceRouter)
 
 connectDB();
 

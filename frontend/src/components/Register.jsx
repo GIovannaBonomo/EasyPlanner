@@ -1,0 +1,73 @@
+import { useState } from "react";
+import instance from "../../data/axios";
+import { Navigate, useNavigate } from "react-router-dom";
+
+function Register() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await instance.post("/user/register", {email, password});
+      alert("Registrazione avvenuta con successo!");
+      navigate("/login");
+    }
+    catch (err) {
+      console.log(err);
+      alert("Errore durante la registrazione.");
+    }
+
+  }
+  return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <form
+        onSubmit={handleRegister}
+        className="p-4 rounded shadow"
+        style={{ maxWidth: '400px', width: '100%', backgroundColor: '#f8f9fa' }}
+      >
+
+        <h3 className="text-center mb-4">Registrazione</h3>
+
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">Email address</label>
+          <input
+            type="email"
+            id="email"
+            className="form-control"
+            placeholder="Inserisci la tua email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            className="form-control"
+            placeholder="Inserisci la tua password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary w-100">
+          Registrati
+        </button>
+
+        <p className="text-center mt-3">
+          Hai già un account? <a href="/login">Accedi</a>
+        </p>
+      </form>
+    </div>
+
+  );
+}
+export default Register;
