@@ -6,6 +6,9 @@ import Home from './pages/Home';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import Register from './components/Register';
+import Client from './pages/Client';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 function App() {
 
@@ -20,6 +23,7 @@ function App() {
         <Route path='/home' element={isAuth ? <Home/> : <Navigate to="/"/>}/> 
         <Route path='/login' element={isAuth ? <Navigate to="/home"/> : <Login setIsAuth={setIsAuth}/>}/>
         <Route path='/register' element={<Register/>}/>
+        <Route path='/client' element={<Client/>}/>
       </Routes>
       <Footer/>
     </BrowserRouter>
