@@ -7,22 +7,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col'
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import { createClient } from '../../data/client.js';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import NewAppointment from './NewAppointment.jsx';
+import NewClient from './NewClient.jsx';
 
 function NavBar({ isAuth, setIsAuth }) {
-
-  const [client, setClient] = useState({
-    name: "",
-    email: "",
-    number: ""
-  });
-
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+  
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -31,20 +21,8 @@ function NavBar({ isAuth, setIsAuth }) {
     navigate("/");
   }
 
-  const handleChange = (e) => {
-  const { name, value } = e.target;
-  setClient((prev) => ({ ...prev, [name]: value }));
-};
-
-const handleSumbit = async () => {
-  try{
-    await createClient(client);
-    handleClose();
-    setClient({name: "", email: "", number:""})
-  }catch(error){
-    console.log("errore nella creazione del cliente", error)
-  }
-}
+  const [showAppointment, setShowAppointment] = useState(false);
+  const [showClient, setShowClient] = useState(false);
 
   return (
     <Navbar expand="lg" bg="light">
@@ -54,7 +32,7 @@ const handleSumbit = async () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/">Calendario</Nav.Link>
-            <Nav.Link href="#">Servizi</Nav.Link>
+            <Nav.Link href="/service">Servizi</Nav.Link>
             <Nav.Link href="/client">Clienti</Nav.Link>
           </Nav>
 
@@ -67,64 +45,26 @@ const handleSumbit = async () => {
                   className="me-2"
                 />
               </Col>
-
-      
               <Col xs="auto">
-                <Button variant="primary" onClick={handleShow}> + </Button>
-                <Modal show={show} onHide={handleClose}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Nuovo Cliente</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Form>
-                      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                        <Form.Label>Nome e Cognome</Form.Label>
-                        <Form.Control
-                          type="text"
-                        name="name"
-                        value={client.name}
-                        onChange={handleChange}
-                        required
-                        />
-                      </Form.Group>
-                      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                          type="email"
-                          name="email"
-                          value={client.email}
-                          onChange={handleChange}
-                          required
-                        />
-                      </Form.Group>
-                      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                        <Form.Label>Numero di telefono</Form.Label>
-                        <Form.Control
-                          type="number"
-                        name="number"
-                        value={client.number}
-                        onChange={handleChange}
-                        required
-                        />
-                      </Form.Group>
-                    </Form>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                      Close
-                    </Button>
-                    <Button variant="primary" onClick={handleSumbit}>
-                      Fatto
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
+                <NavDropdown className='button' title="+" id="basic-nav-dropdown">
+                    <NavDropdown.Item onClick={() => setShowClient(true)}>
+                    Nuovo Cliente
+                    </NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => setShowAppointment(true)}>
+                    Nuovo Appuntamento
+                  </NavDropdown.Item>
+                </NavDropdown>
+                <NewClient
+                show={showClient}
+                handleClose={() => setShowClient(false)}
+                />
+                <NewAppointment
+                  show={showAppointment}
+                  onClose={() => setShowAppointment(false)}
+                />
+                
+              </Col>
 
-              </Col>
-              <Col xs="auto">
-                <Button type="submit" variant="primary">
-                  Submit
-                </Button>
-              </Col>
             </Row>
           </Form>
           {isAuth ? (

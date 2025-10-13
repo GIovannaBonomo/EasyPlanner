@@ -2,16 +2,16 @@ import instance from "./axios";
 
 export async function getAppointment() {
     try{
-        const response = await instance.get("/appointments");
+        const response = await instance.get("/appointment");
         return response.data;
     }catch(error){
         console.log(error)
     }
 }
 
-export async function createAppointment() {
+export async function createAppointment(appointmentData) {
     try{
-        const response = await instance.post("/appointments");
+        const response = await instance.post("/appointment", appointmentData);
         return response.data
     }catch(error){
         console.log(error)
@@ -20,7 +20,7 @@ export async function createAppointment() {
 
 export async function AppointmentId(id){
     try{
-        const response = await instance.get("/appointments/"+ id );
+        const response = await instance.get("/appointment/"+ id );
         return response.data
     } catch(error){
         console.log(error)
@@ -29,7 +29,7 @@ export async function AppointmentId(id){
 
 export async function putAppointment(id){
     try{
-        const response = await instance.put("/appointments/"+id);
+        const response = await instance.put("/appointment/"+id);
         return response.data
     } catch (error){
         console.log(error)
@@ -38,7 +38,7 @@ export async function putAppointment(id){
 
 export async function deleteAppointment(id){
     try{
-        const response = await instance.delete("/appointments/"+id);
+        const response = await instance.delete("/appointment/"+id);
         return response.data
     } catch(error){
         console.log(error)

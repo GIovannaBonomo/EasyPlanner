@@ -8,6 +8,8 @@ import Footer from './components/Footer';
 import Register from './components/Register';
 import Client from './pages/Client';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Service from './pages/Service';
+import AddService from './components/AddService';
 
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
         <Route path='/login' element={isAuth ? <Navigate to="/home"/> : <Login setIsAuth={setIsAuth}/>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='/client' element={<Client/>}/>
+        <Route path='/service' element={<Service/>}/>
+        <Route path='/service/addService' element={<AddService/>}/>
       </Routes>
       <Footer/>
     </BrowserRouter>

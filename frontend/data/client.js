@@ -1,6 +1,8 @@
 import instance from "./axios";
 
 export async function getClient() {
+    const token = localStorage.getItem("token");
+    if(!token) return;
     try{
         const response = await instance.get("/client");
         return response.data;
@@ -27,9 +29,9 @@ export async function clientId(id){
     }
 }
 
-export async function putClient(id){
+export async function putClient(id, clientData){
     try{
-        const response = await instance.put("/client/"+id);
+        const response = await instance.put("/client/"+id, clientData);
         return response.data
     } catch (error){
         console.log(error)

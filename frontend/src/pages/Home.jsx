@@ -3,17 +3,40 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { Container } from 'react-bootstrap'
-import itLocale from '@fullcalendar/core/locales/it' 
+import itLocale from '@fullcalendar/core/locales/it'
+import { useEffect, useState } from 'react'
+import NewAppointment from '../components/NewAppointment'
+import { getAppointment } from '../../data/appointments'
 
 function Home() {
 
- const events = [
-    { title: 'Meeting', start: '2025-10-06T09:00:00', end: '2025-10-06T10:30:00' },
-    { title: 'Pranzo', start: '2025-10-07T12:00:00', end: '2025-10-07T13:00:00' }
-  ];
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTime, setSelectedTime] = useState({ start: null, end: null });
+  const [events, setEvents ] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    return (
-          <Container className="mb-5">
+
+  async function fetchAppointments() {
+      try {
+        const data = await getAppointment(); 
+        const mapEvents = data.map((appointment) => ({
+          title: appointment.service?.name || 'Appuntamento',
+          start: appointment.start,
+          end: appointment.end,
+        }));
+        setEvents(mapEvents);
+        setLoading(false);
+      } catch (error) {
+        console.error('Errore nel recupero appuntamenti', error);
+      }
+    }
+   useEffect(() => {
+    fetchAppointments();
+   }), [];
+  
+
+  return (
+    <Container className="mb-5">
       <FullCalendar
         plugins={[timeGridPlugin, interactionPlugin]}
         initialView="timeGridWeek"  // settimana con fasce orarie
@@ -32,19 +55,25 @@ function Home() {
         editable={true}     // drag & drop eventi
         selectable={true}   // selezione range orario
         select={(info) => {
-          const title = prompt('Nome evento:');
-          if (title) {
-            info.view.calendar.addEvent({
-              title,
-              start: info.start,
-              end: info.end,
-              allDay: false
-            });
-          }
+          const start = info.start;
+          const end = info.end;
+          const date = start.toISOString().split('T')[0]; // estrai la data in formato YYYY-MM-DD
+          const startTime = new Date(date + 'T' + start.toTimeString().slice(0, 5));  // combina data e ora di inizio
+          const endTime = new Date(date + 'T' + end.toTimeString().slice(0, 5));      // combina data e ora di fine
+          setSelectedTime({date, startTime, endTime});  // salva il tempo selezionato
+          setShowModal(true);              // apre il modal
         }}
+
       />
+      <NewAppointment
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        preselectedTime={selectedTime}
+        onCreated={fetchAppointments}   
+           />
+
     </Container>
-    )
+  )
 }
 
-export default Home
+export default Home;

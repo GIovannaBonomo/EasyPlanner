@@ -49,7 +49,7 @@ function Login({ setIsAuth }) {
           required
         />
       </div>
-      <button type="submit" className="btn btn-primary">Submit</button>
+      <button type="submit" className="btn btn-primary">Accedi</button>
       <p className="text-center mt-3">
         Non hai un account? <a href="/register">Registrati</a>
       </p>

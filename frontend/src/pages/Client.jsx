@@ -1,22 +1,24 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Container, Row, Table } from "react-bootstrap";
-import { deleteClient, getClient } from "../../data/client";
+import { Button, Container, Form, Modal, Row, Table } from "react-bootstrap";
+import { deleteClient, getClient, putClient } from "../../data/client";
+import NewClient from "../components/NewClient";
 
 function Client() {
 
     const [client, setClient] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
         async function fetchClients() {
             try {
                 const data = await getClient();
                 setClient(data);
+                setLoading(false);
             } catch (error) {
                 console.error("Errore nel recuperare la lista dei clienti:", error);
             }
         }
-
+    useEffect(() => {
         fetchClients();
     }, []);
 
@@ -32,9 +34,50 @@ function Client() {
 
     };
 
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = (client) => { setClientEdit(client); setShow(true); }
+
+    const [clientEdit, setClientEdit] = useState({
+        name: "",
+        email: "",
+        number: ""
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setClientEdit((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const updated = await putClient(clientEdit._id, clientEdit);
+            setClient((prev) =>
+                prev.map((c) => (c._id === updated._id ? updated : c))
+            );
+            handleClose();
+        } catch (error) {
+            console.log("Errore nella modifica del cliente", error);
+        }
+    };
+
+    const [showClient, setShowClient] = useState(false);
+
 
     return (
         <Container className="m-5">
+            <div className="d-flex justify-content-between mb-3">
+                <h2>Clienti</h2>
+                <Button onClick={() => setShowClient(true)}>
+                    + Nuovo Cliente
+                </Button>
+            </div>
+            <NewClient
+                show={showClient}
+                handleClose={()=>setShowClient(false)}
+                onCreate={fetchClients} 
+            />
             <Row>
                 <Table striped bordered hover>
                     <thead>
@@ -54,9 +97,10 @@ function Client() {
                                 <td>{client.number}</td>
                                 <td>
                                     <i className="bi bi-pencil-square"
-                                    role="button"
-                                    
-                                    ></i>
+                                        role="button"
+                                        onClick={() => handleShow(client)}
+                                    >
+                                    </i>
                                 </td>
                                 <td>  <i
                                     className="bi bi-x-square-fill text-danger "
@@ -67,8 +111,53 @@ function Client() {
                             </tr>))}
                     </tbody>
                 </Table>
-
             </Row>
+
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modifica Cliente</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Nome e Cognome</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="name"
+                            value={clientEdit.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            type="email"
+                            name="email"
+                            value={clientEdit.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Numero di telefono</Form.Label>
+                        <Form.Control
+                            type="number"
+                            name="number"
+                            value={clientEdit.number}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Chiudi
+                    </Button>
+                    <Button variant="primary" onClick={handleSubmit}>
+                        Salva Modificheb
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     )
 }

@@ -1,6 +1,8 @@
 import instance from "./axios";
 
 export async function getService() {
+    const token = localStorage.getItem("token");
+    if(!token) return;
     try{
         const response = await instance.get("/service");
         return response.data;
@@ -9,9 +11,9 @@ export async function getService() {
     }
 }
 
-export async function createService() {
+export async function createService(serviceData) {
     try{
-        const response = await instance.post("/service");
+        const response = await instance.post("/service", serviceData);
         return response.data
     }catch(error){
         console.log(error)
@@ -27,9 +29,9 @@ export async function serviceId(id){
     }
 }
 
-export async function putService(id){
+export async function putService(id, serviceData){
     try{
-        const response = await instance.put("/service/"+id);
+        const response = await instance.put("/service/"+id, serviceData);
         return response.data
     } catch (error){
         console.log(error)
