@@ -1,55 +1,54 @@
-import { useState, useEffect } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
-import { createAppointment } from "../../data/appointments";
+import { useEffect, useState } from "react";
 import { getClient } from "../../data/client";
+import { deleteAppointment, putAppointment } from "../../data/appointments";
+import { Button, Form, Modal } from "react-bootstrap";
 import { getService } from "../../data/service";
 
-function NewAppointment({ show, onClose, preselectedTime}) {
-  const [clients, setClients] = useState([]);
-  const [services, setServices] = useState([]);
+function EditAppointment({ show, onClose, selectAppointment, onUpdated }) {
 
+  const [client, setClient] = useState([]);
+  const [service, setService] = useState([]);
   const [appointment, setAppointment] = useState({
     client: "",
     service: "",
-    date:"",
+    date: "",
     start: "",
     end: "",
     notes: "",
   });
 
   useEffect(() => {
-    if (preselectedTime?.date) {
-      setAppointment((prev) => ({
-        ...prev,
-        date: preselectedTime.date,
-        start: preselectedTime.startTime,
-        end: preselectedTime.endTime,
-      }));
-    }
-  }, [preselectedTime]);
+    if (selectAppointment) {
+      const startDate = new Date(selectAppointment.start);
+      const endDate = new Date(selectAppointment.end);
 
+      const validStart = startDate instanceof Date && !isNaN(startDate);
+      const validEnd = endDate instanceof Date && !isNaN(endDate);
+
+      setAppointment({
+        client: selectAppointment.client?._id || selectAppointment.client || "",
+        service: selectAppointment.service?._id || selectAppointment.service || "",
+        date: validStart ? startDate.toISOString().split("T")[0] : "",
+        start: validStart ? startDate.toTimeString().slice(0, 5) : "",
+        end: validEnd ? endDate.toTimeString().slice(0, 5) : "",
+        notes: selectAppointment.notes || "",
+        id: selectAppointment.id || selectAppointment._id || "",
+      });
+    }
+  }, [selectAppointment]);
+
+  
   useEffect(() => {
-    async function fetchClients() {
+    async function fetchData() {
       try {
-        const data = await getClient();
-        setClients(Array.isArray( data) ? data : []);
+        const [clientData, serviceData] = await Promise.all([getClient(), getService()]);
+        setClient(Array.isArray(clientData) ? clientData : []);
+        setService(Array.isArray(serviceData) ? serviceData : []);
       } catch (error) {
-        console.error("Errore nel recupero clienti", error);
+        console.error("Errore nel recuperare clienti e servizi", error);
       }
     }
-    fetchClients();
-  }, []);
-
-  useEffect(() => {
-    async function fetchServices() {
-      try {
-        const data = await getService();
-        setServices(Array.isArray ( data) ? data : []);
-      } catch (error) {
-        console.error("Errore nel recupero servizi", error);
-      }
-    }
-    fetchServices();
+    fetchData();
   }, []);
 
   const handleChange = (e) => {
@@ -57,38 +56,57 @@ function NewAppointment({ show, onClose, preselectedTime}) {
     setAppointment((prev) => ({ ...prev, [name]: value }));
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const start = new Date((appointment.date) + 'T' + (appointment.start));
-      const end = new Date((appointment.date) + 'T' + (appointment.end));
+      const start = new Date(`${appointment.date}T${appointment.start}`);
+      const end = new Date(`${appointment.date}T${appointment.end}`);
 
-       const appointmentData = {
+      const appointmentData = {
         client: appointment.client,
         service: appointment.service,
-        start,
-        end,
+        start: start.toISOString(),
+        end: end.toISOString(),
         notes: appointment.notes,
-      }; 
-      
-      await createAppointment(appointmentData);
-      alert("Appuntamento creato con successo!");
-      onClose();
-      setAppointment({ client: "", service: "", date:"", start: "",end:"", notes: "" });
-      const selectedService = services.find((s) => s._id === appointment.service);
-      if (!selectedService) {
-        alert("Seleziona un servizio valido");
+      };
+
+      if (!appointment.id) {
+        alert("Errore: ID appuntamento mancante");
         return;
-      }} catch (error) {
-      console.error("Errore nella creazione dell'appuntamento", error);
-      alert("Errore nella creazione dell'appuntamento");
+      }
+
+      await putAppointment(appointment.id, appointmentData);
+      alert("Appuntamento modificato con successo!");
+      onClose();
+      onUpdated();
+    } catch (error) {
+      console.error("Errore nella modifica dell'appuntamento", error);
+      alert("Errore nella modifica dell'appuntamento");
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      if (!appointment.id) {
+        alert("Errore: ID appuntamento mancante");
+        return;
+      }
+
+      await deleteAppointment(appointment.id);
+      alert("Appuntamento eliminato con successo!");
+      onClose();
+      onUpdated();
+    } catch (error) {
+      console.error("Errore nell'eliminazione dell'appuntamento", error);
+      alert("Errore nell'eliminazione dell'appuntamento");
     }
   };
 
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Nuovo Appuntamento</Modal.Title>
+        <Modal.Title>Modifica Appuntamento</Modal.Title>
       </Modal.Header>
 
       <Form onSubmit={handleSubmit}>
@@ -102,7 +120,7 @@ function NewAppointment({ show, onClose, preselectedTime}) {
               required
             >
               <option value="">Seleziona un cliente</option>
-              {clients.map((c) => (
+              {client.map((c) => (
                 <option key={c._id} value={c._id}>
                   {c.name}
                 </option>
@@ -119,7 +137,7 @@ function NewAppointment({ show, onClose, preselectedTime}) {
               required
             >
               <option value="">Seleziona un servizio</option>
-              {services.map((s) => (
+              {service.map((s) => (
                 <option key={s._id} value={s._id}>
                   {s.name} ({s.duration} min) - €{s.price}
                 </option>
@@ -127,7 +145,7 @@ function NewAppointment({ show, onClose, preselectedTime}) {
             </Form.Select>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="startInput">
+          <Form.Group className="mb-3">
             <Form.Label>Data</Form.Label>
             <Form.Control
               type="date"
@@ -138,7 +156,7 @@ function NewAppointment({ show, onClose, preselectedTime}) {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="startInput">
+          <Form.Group className="mb-3">
             <Form.Label>Inizio</Form.Label>
             <Form.Control
               type="time"
@@ -149,7 +167,7 @@ function NewAppointment({ show, onClose, preselectedTime}) {
             />
           </Form.Group>
 
-           <Form.Group className="mb-3" controlId="startInput">
+          <Form.Group className="mb-3">
             <Form.Label>Fine</Form.Label>
             <Form.Control
               type="time"
@@ -160,7 +178,7 @@ function NewAppointment({ show, onClose, preselectedTime}) {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="notesInput">
+          <Form.Group className="mb-3">
             <Form.Label>Note</Form.Label>
             <Form.Control
               as="textarea"
@@ -172,12 +190,15 @@ function NewAppointment({ show, onClose, preselectedTime}) {
           </Form.Group>
         </Modal.Body>
 
-        <Modal.Footer>
+        <Modal.Footer className="d-flex justify-content-between">
+          <Button variant="danger" onClick={handleDelete}>
+            Elimina
+          </Button>
           <Button variant="secondary" onClick={onClose}>
             Chiudi
           </Button>
           <Button type="submit" variant="primary">
-            Salva Appuntamento
+            Salva modifiche
           </Button>
         </Modal.Footer>
       </Form>
@@ -185,4 +206,4 @@ function NewAppointment({ show, onClose, preselectedTime}) {
   );
 }
 
-export default NewAppointment;
+export default EditAppointment;

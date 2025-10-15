@@ -27,9 +27,9 @@ export async function AppointmentId(id){
     }
 }
 
-export async function putAppointment(id){
+export async function putAppointment(id, appointmentData){
     try{
-        const response = await instance.put("/appointment/"+id);
+        const response = await instance.put("/appointment/"+id, appointmentData);
         return response.data
     } catch (error){
         console.log(error)
