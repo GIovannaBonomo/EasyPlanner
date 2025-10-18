@@ -10,26 +10,28 @@ import Client from './pages/Client';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Service from './pages/Service';
 import AddService from './components/AddService';
+import GoogleLogin from './components/GoogleLogin.jsx';
 
 
 function App() {
 
   const [count, setCount] = useState(0)
-  const [isAuth, setIsAuth]= useState(()=>!!localStorage.getItem("token"))
+  const [isAuth, setIsAuth] = useState(() => !!localStorage.getItem("token"))
 
   return (
     <BrowserRouter>
-    <NavBar isAuth={isAuth} setIsAuth={setIsAuth}/>
+      <NavBar isAuth={isAuth} setIsAuth={setIsAuth} />
       <Routes>
-        <Route path='/' element={isAuth ? <Navigate to="/home"/> : <Login setIsAuth={setIsAuth}/>}/>
-        <Route path='/home' element={isAuth ? <Home/> : <Navigate to="/"/>}/> 
-        <Route path='/login' element={isAuth ? <Navigate to="/home"/> : <Login setIsAuth={setIsAuth}/>}/>
-        <Route path='/register' element={<Register/>}/>
-        <Route path='/client' element={<Client/>}/>
-        <Route path='/service' element={<Service/>}/>
-        <Route path='/service/addService' element={<AddService/>}/>
+        <Route path='/' element={isAuth ? <Navigate to="/home" /> : <Login setIsAuth={setIsAuth} />} />
+        <Route path='/home' element={isAuth ? <Home /> : <Navigate to="/" />} />
+        <Route path='/login' element={isAuth ? <Navigate to="/home" /> : <Login setIsAuth={setIsAuth} />} />
+        <Route path='/register' element={<Register />} />
+        <Route path="/login/success" element={<GoogleLogin />}/>
+        <Route path='/client' element={<Client />} />
+        <Route path='/service' element={<Service />} />
+        <Route path='/service/addService' element={<AddService />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </BrowserRouter>
   )
 }

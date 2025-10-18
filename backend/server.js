@@ -7,6 +7,8 @@ import { connectDB } from './db.js';
 import clientRouter from './routes/client.js';
 import serviceRouter from './routes/service.js';
 import appointmentRouter from './routes/appointment.js';
+import passport from 'passport';
+import strategy from './passport-config.js';
 
 
 const port = process.env.PORT || 5000;
@@ -14,6 +16,8 @@ const server = express();
 
 server.use(cors()); 
 server.use(express.json()); 
+
+passport.use(strategy);
 
 server.use('/user', userRouter);
 server.use('/client', clientRouter)

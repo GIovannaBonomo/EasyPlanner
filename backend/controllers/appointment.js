@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Appointment from "../models/Appointment.js"
+import mailer from "../helpers/mailer.js";
 
 export async function getAppointment(req, res) {
     try {
@@ -37,6 +38,14 @@ export async function createAppointment(req, res) {
         const populatedAppointment = await Appointment.findById(appointmentSaved._id)
             .populate("client", "name email number")
             .populate("service", "name duration price");
+
+        await mailer.sendMail({
+            from: '"Easy Planner" <noreply@easyplanner.com>',
+            to: populatedAppointment.client.email,
+            subject: 'Appuntamento confermato!',
+            text: `Gentile ${populatedAppointment.client.name}, il tuo appuntamento è confermato! ${populatedAppointment.service.name} il ${new Date(start).toLocaleString()}.`,
+            html: `Gentile ${populatedAppointment.client.name}, il tuo appuntamento è confermato! <b>${populatedAppointment.service.name}</b> il ${new Date(start).toLocaleString()}.`
+        });
 
         res.status(201).json(populatedAppointment);
     } catch (error) {

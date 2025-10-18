@@ -1,5 +1,6 @@
 import { signJwt } from "../helpers/jwt.js";
-import User from "../models/user.js";
+import User from "../models/User.js";
+
 
 export async function register(req, res, next) {
   console.log("Body ricevuto:", req.body);

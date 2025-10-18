@@ -41,7 +41,7 @@ function Home() {
   }
   useEffect(() => {
     fetchAppointments();
-  }), [];
+  }, []);
 
  const handleEventClick = (clickInfo) => {
   const appointment = events.find(

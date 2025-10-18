@@ -22,6 +22,11 @@ function Register() {
     }
 
   }
+
+ const googleLogin = () => {
+  window.location.href = import.meta.env.VITE_API_URL + import.meta.env.VITE_GOOGLE_PATH;
+  };
+
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <form
@@ -29,6 +34,14 @@ function Register() {
         className="p-4 rounded shadow"
         style={{ maxWidth: '400px', width: '100%', backgroundColor: '#f8f9fa' }}
       >
+        <button
+  type="button"   
+  onClick={googleLogin}
+  className="btn btn-danger w-100 mb-3"
+>
+  Registrati con Google
+</button>
+
 
         <h3 className="text-center mb-4">Registrazione</h3>
 

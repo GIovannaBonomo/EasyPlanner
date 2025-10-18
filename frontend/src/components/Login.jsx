@@ -8,6 +8,9 @@ function Login({ setIsAuth }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const googleLogin = () => {
+  window.location.href = import.meta.env.VITE_API_URL + import.meta.env.VITE_GOOGLE_PATH;
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,6 +28,13 @@ function Login({ setIsAuth }) {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
     <form onSubmit={handleLogin} className="p-4 rounded shadow" style= {{maxWidth: '400px', width: '100%', backgroundColor: '#f8f9fa' }}>
+       <button
+          type="button"   
+          onClick={googleLogin}
+          className="btn btn-danger w-100 mb-3"
+        >
+          Accedi con Google
+        </button>
       <div className="mb-3">
         <label htmlFor="email" className="form-label">Email address</label>
         <input
