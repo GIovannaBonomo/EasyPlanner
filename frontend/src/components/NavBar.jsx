@@ -10,6 +10,7 @@ import { useState } from 'react';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import NewAppointment from './NewAppointment.jsx';
 import NewClient from './NewClient.jsx';
+import logo from '../assets/logoEasyPlanner.png';
 
 function NavBar({ isAuth, setIsAuth }) {
   
@@ -27,7 +28,13 @@ function NavBar({ isAuth, setIsAuth }) {
   return (
     <Navbar expand="lg" bg="light">
       <Container>
-        <Navbar.Brand href="/">EasyPlanner</Navbar.Brand>
+        <Navbar.Brand href="/">
+            <img
+              src={logo}
+              className='logo'
+              alt="React Bootstrap logo"
+            />
+          </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -39,14 +46,7 @@ function NavBar({ isAuth, setIsAuth }) {
           <Form className="d-flex align-items-center">
             <Row className="g-2 align-items-center">
               <Col xs="auto">
-                <Form.Control
-                  type="text"
-                  placeholder="Search"
-                  className="me-2"
-                />
-              </Col>
-              <Col xs="auto">
-                <NavDropdown className='button' title="+" id="basic-nav-dropdown">
+                <NavDropdown title="+" >
                     <NavDropdown.Item onClick={() => setShowClient(true)}>
                     Nuovo Cliente
                     </NavDropdown.Item>
@@ -68,11 +68,11 @@ function NavBar({ isAuth, setIsAuth }) {
             </Row>
           </Form>
           {isAuth ? (
-            <Button className="ms-2" variant="danger" onClick={handleLogout}>
+            <Button  onClick={handleLogout}>
               Disconnetti
             </Button>
           ) : (
-            <Link className="btn btn-primary ms-2" to="/login">Accedi</Link>
+            <Link className="btn ms-2" to="/login">Accedi</Link>
           )}
         </Navbar.Collapse>
       </Container>

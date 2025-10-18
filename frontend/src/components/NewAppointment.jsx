@@ -4,7 +4,7 @@ import { createAppointment } from "../../data/appointments";
 import { getClient } from "../../data/client";
 import { getService } from "../../data/service";
 
-function NewAppointment({ show, onClose, preselectedTime}) {
+function NewAppointment({ show, onClose, preselectedTime, onCreated }) {
   const [clients, setClients] = useState([]);
   const [services, setServices] = useState([]);
 
@@ -18,15 +18,20 @@ function NewAppointment({ show, onClose, preselectedTime}) {
   });
 
   useEffect(() => {
-    if (preselectedTime?.date) {
-      setAppointment((prev) => ({
-        ...prev,
-        date: preselectedTime.date,
-        start: preselectedTime.startTime,
-        end: preselectedTime.endTime,
-      }));
-    }
-  }, [preselectedTime]);
+  if (preselectedTime) {
+    setAppointment((prev) => ({
+      ...prev,
+      date: preselectedTime.date || prev.date,
+      start: preselectedTime.startTime
+        ? preselectedTime.startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        : prev.start,
+      end: preselectedTime.endTime
+        ? preselectedTime.endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        : prev.end,
+    }));
+  }
+}, [preselectedTime]);
+
 
   useEffect(() => {
     async function fetchClients() {
@@ -59,6 +64,11 @@ function NewAppointment({ show, onClose, preselectedTime}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const selectedService = services.find((s) => s._id === appointment.service);
+    if (!selectedService) {
+        alert("Seleziona un servizio valido");
+        return;
+      }
     try {
       const start = new Date((appointment.date) + 'T' + (appointment.start));
       const end = new Date((appointment.date) + 'T' + (appointment.end));
@@ -66,20 +76,20 @@ function NewAppointment({ show, onClose, preselectedTime}) {
        const appointmentData = {
         client: appointment.client,
         service: appointment.service,
-        start,
-        end,
+        start : start.toISOString(),
+        end: end.toISOString(),
         notes: appointment.notes,
       }; 
       
       await createAppointment(appointmentData);
+      if (onCreated){
+        onCreated(createAppointment);
+      }
       alert("Appuntamento creato con successo!");
       onClose();
       setAppointment({ client: "", service: "", date:"", start: "",end:"", notes: "" });
-      const selectedService = services.find((s) => s._id === appointment.service);
-      if (!selectedService) {
-        alert("Seleziona un servizio valido");
-        return;
-      }} catch (error) {
+      
+      } catch (error) {
       console.error("Errore nella creazione dell'appuntamento", error);
       alert("Errore nella creazione dell'appuntamento");
     }

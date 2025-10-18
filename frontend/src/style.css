@@ -1,0 +1,67 @@
+:root {
+    --primary: #EAC7C7;
+    --secondary: #F4E9E3;
+    --text-color: #6B5F5B;
+    --border-color: #DDD6D3;
+    --background: #FFFFFF;
+    --accent: #E9D3C3;
+}
+
+body .navbar,
+body .modal-content,
+body .card-footer,
+.dropdown-item{
+    background-color: var(--background) !important;
+    color: var(--text-color) !important;
+    font-family: "Poppins", "Lato", sans-serif !important;
+}
+
+button, .btn {
+    background-color: var(--primary)!important;
+    border: none!important;
+    color: #fff!important;
+    border-radius: 8px!important;
+    padding: 10px 20px!important;
+    cursor: pointer!important;
+    margin: 5px!important;
+}
+
+button:hover {
+    background-color: var(--accent)!important;
+}
+
+.table thead {
+    background-color: var(--secondary)!important;
+}
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid var(--border-color)!important;
+}   
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--secondary)!important;
+}
+.table-hover tbody tr:hover {
+    background-color: var(--primary)!important;
+}
+
+.container {
+    background-color: var(--secondary)!important;
+    padding: 20px;
+    border-radius: 10px;
+}   
+
+.fc-event {
+    background-color: var(--background) !important;
+    border: 1px solid black !important;
+}
+.fc-event-title, .fc-event-time {
+    color: var(--text-color) !important;
+}
+
+.logo {
+    width: 100px;  
+    height: auto; 
+}
+
+
+

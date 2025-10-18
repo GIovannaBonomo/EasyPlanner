@@ -14,7 +14,8 @@ export async function createAppointment(appointmentData) {
         const response = await instance.post("/appointment", appointmentData);
         return response.data
     }catch(error){
-        console.log(error)
+        console.error("Errore in createAppointment:", error);
+        throw error;      
     }
 }
 

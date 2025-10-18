@@ -11,6 +11,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import Service from './pages/Service';
 import AddService from './components/AddService';
 import GoogleLogin from './components/GoogleLogin.jsx';
+import './style.css';
 
 
 function App() {

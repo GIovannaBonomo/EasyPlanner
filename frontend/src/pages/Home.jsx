@@ -15,7 +15,6 @@ function Home() {
   const [selectedTime, setSelectedTime] = useState({ start: null, end: null });
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [appointment, setAppointment] = useState([]);
   const [selectAppointments, setSelectAppointments] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -25,7 +24,7 @@ function Home() {
       const data = await getAppointment();
       const mapEvents = data.map((appointment) => ({
         id: appointment._id,
-        title: appointment.service?.name || 'Appuntamento',
+        title: `${appointment.client?.name || 'Appuntamento'} - ${appointment.service?.name || ''}`,
         start: appointment.start,
         end: appointment.end,
         client: appointment.client,
@@ -43,19 +42,26 @@ function Home() {
     fetchAppointments();
   }, []);
 
- const handleEventClick = (clickInfo) => {
-  const appointment = events.find(
-    (event) => event.id === clickInfo.event.id
-  );
+  const handleEventClick = (clickInfo) => {
+    const appointment = events.find(
+      (event) => event.id === clickInfo.event.id
+    );
 
-  setSelectAppointments(appointment);
-  setShowEditModal(true);
-}
-
-
+    setSelectAppointments(appointment);
+    setShowEditModal(true);
+  }
+  const handleSelect = (info) => {
+    const dateStr = info.start.toISOString().split('T')[0];
+    setSelectedTime({
+      date: dateStr,
+      startTime: info.start,
+      endTime: info.end,
+    });
+    setShowModal(true);
+  };
 
   return (
-    <Container className="mb-5">
+    <Container className="mb-5 background-color">
       <FullCalendar
         plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
         initialView="timeGridWeek"  // settimana con fasce orarie
@@ -73,20 +79,38 @@ function Home() {
         locale={itLocale}
         weekends={false}
         editable={true}     // drag & drop eventi
+        eventDrop={async (info) => {
+          try {
+            const updatedAppointment = {
+              ...info.event.extendedProps,
+              start: info.event.start,
+              end: info.event.end,
+            };
+            await putAppointment(info.event.id, updatedAppointment);
+            fetchAppointments(); // ricarica gli eventi aggiornati
+          } catch (error) {
+            console.error("Errore aggiornando l'appuntamento", error);
+            info.revert(); // riporta l'evento alla posizione originale se c'è errore
+          }
+        }}
+        eventResize={async (info) => {
+          try {
+            const updatedAppointment = {
+              ...info.event.extendedProps,
+              start: info.event.start,
+              end: info.event.end,
+            };
+            await putAppointment(info.event.id, updatedAppointment);
+            fetchAppointments();
+          } catch (error) {
+            console.error("Errore aggiornando l'appuntamento", error);
+            info.revert();
+          }
+        }}
         selectable={true}   // selezione range orario
         height="auto"
         loading={function (isLoading) { if (!isLoading) setLoading(false); }}
-
-        select={(info) => {
-          const start = info.start;
-          const end = info.end;
-          const date = start.toISOString().split('T')[0]; // estrai la data in formato YYYY-MM-DD
-          const startTime = new Date(date + 'T' + start.toTimeString().slice(0, 5));  // combina data e ora di inizio
-          const endTime = new Date(date + 'T' + end.toTimeString().slice(0, 5));      // combina data e ora di fine
-          setSelectedTime({ date, startTime, endTime });  // salva il tempo selezionato
-          setShowModal(true);              // apre il modal
-        }}
-
+        select={handleSelect}
       />
       <NewAppointment
         show={showModal}
