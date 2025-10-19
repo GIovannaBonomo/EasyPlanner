@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from './components/Login';
 import Home from './pages/Home';
@@ -13,15 +13,29 @@ import AddService from './components/AddService';
 import GoogleLogin from './components/GoogleLogin.jsx';
 import './style.css';
 
+function AppWrapper() {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+}
+
 
 function App() {
 
-  const [count, setCount] = useState(0)
   const [isAuth, setIsAuth] = useState(() => !!localStorage.getItem("token"))
 
+  const location = useLocation();
+
+ const hideNavAndFooter = ['/', '/login', '/register', '/login/success',].includes(location.pathname);
+
+
   return (
-    <BrowserRouter>
-      <NavBar isAuth={isAuth} setIsAuth={setIsAuth} />
+    <>
+    {!hideNavAndFooter && <NavBar isAuth={isAuth} setIsAuth={setIsAuth} /> }
+
+      
       <Routes>
         <Route path='/' element={isAuth ? <Navigate to="/home" /> : <Login setIsAuth={setIsAuth} />} />
         <Route path='/home' element={isAuth ? <Home /> : <Navigate to="/" />} />
@@ -32,9 +46,9 @@ function App() {
         <Route path='/service' element={<Service />} />
         <Route path='/service/addService' element={<AddService />} />
       </Routes>
-      <Footer />
-    </BrowserRouter>
+       {!hideNavAndFooter && <Footer />}
+       </>
   )
 }
 
-export default App
+export default AppWrapper

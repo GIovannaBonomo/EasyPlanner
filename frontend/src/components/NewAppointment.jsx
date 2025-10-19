@@ -96,11 +96,8 @@ function NewAppointment({ show, onClose, preselectedTime, onCreated }) {
   };
 
   return (
-    <Modal show={show} onHide={onClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Nuovo Appuntamento</Modal.Title>
-      </Modal.Header>
-
+    <Modal show={show}>
+        <Modal.Title className="m-3">Nuovo Appuntamento</Modal.Title>
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className="mb-3" controlId="clientInput">

@@ -27,10 +27,8 @@ function NewClient({ show, handleClose, onCreate }) {
   }
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Nuovo Cliente</Modal.Title>
-      </Modal.Header>
+    <Modal show={show}>  
+        <Modal.Title className="m-3">Nuovo Cliente</Modal.Title>
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">

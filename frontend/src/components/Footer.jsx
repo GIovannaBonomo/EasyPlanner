@@ -3,8 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 function Footer() {
   return (
-    <footer className="bg-light py-4 mt-auto">
-      <Container>
+      <Container className='mt-2'>
         <Row>
           <Col md={6}>
             <h5>Easy Planner</h5>  
@@ -14,7 +13,6 @@ function Footer() {
           </Col>
         </Row>
       </Container>
-    </footer>
   );
 }
 

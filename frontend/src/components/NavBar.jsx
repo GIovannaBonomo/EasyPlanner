@@ -37,7 +37,7 @@ function NavBar({ isAuth, setIsAuth }) {
           </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="me-auto d-flex flex-column text-center w-100">
             <Nav.Link href="/">Calendario</Nav.Link>
             <Nav.Link href="/service">Servizi</Nav.Link>
             <Nav.Link href="/client">Clienti</Nav.Link>
@@ -46,7 +46,7 @@ function NavBar({ isAuth, setIsAuth }) {
           <Form className="d-flex align-items-center">
             <Row className="g-2 align-items-center">
               <Col xs="auto">
-                <NavDropdown title="+" >
+                <NavDropdown title = {<i className="bi bi-plus-lg"></i>}  className='btn' >
                     <NavDropdown.Item onClick={() => setShowClient(true)}>
                     Nuovo Cliente
                     </NavDropdown.Item>

@@ -66,7 +66,7 @@ function Home() {
         plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
         initialView="timeGridWeek"  // settimana con fasce orarie
         headerToolbar={{
-          left: 'prev,next today',
+          left: 'prev,next',
           center: 'title',
           right: 'timeGridDay,timeGridWeek' // switch tra giorno e settimana
         }}

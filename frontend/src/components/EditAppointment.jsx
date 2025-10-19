@@ -104,11 +104,8 @@ function EditAppointment({ show, onClose, selectAppointment, onUpdated }) {
   };
 
   return (
-    <Modal show={show} onHide={onClose}>
-      <Modal.Header closeButton>
+    <Modal show={show}>
         <Modal.Title>Modifica Appuntamento</Modal.Title>
-      </Modal.Header>
-
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className="mb-3" controlId="clientInput">

@@ -66,7 +66,7 @@ function Client() {
 
 
     return (
-        <Container className="m-5">
+        <Container className="vh-100">
             <div className="d-flex justify-content-between mb-3">
                 <h2>Clienti</h2>
                 <Button onClick={() => setShowClient(true)}>
@@ -113,10 +113,8 @@ function Client() {
                 </Table>
             </Row>
 
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modifica Cliente</Modal.Title>
-                </Modal.Header>
+            <Modal show={show}>
+                    <Modal.Title className="m-3">Modifica Cliente</Modal.Title>
                 <Modal.Body>
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                         <Form.Label>Nome e Cognome</Form.Label>

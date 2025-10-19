@@ -63,7 +63,7 @@ function Service() {
 
     
     return (
-        <Container className="m-5">
+        <Container className="vh-100">
         <div className="d-flex justify-content-between mb-3">
         <h2>Servizi</h2>
         <Button onClick={() => navigate("/service/addService")}>

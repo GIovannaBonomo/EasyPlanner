@@ -38,7 +38,7 @@ function AddService() {
         <Modal.Header className="m-3">
           <Modal.Title>Aggiungi Servizio</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="m-3">
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Nome</Form.Label>
