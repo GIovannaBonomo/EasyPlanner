@@ -14,7 +14,7 @@ function Service() {
                 const data = await getService();
                 setService(data);
             } catch (error) {
-                console.log("Errore nel recuperare la lista dei servizi", error);
+                console.error("Errore nel recuperare la lista dei servizi", error);
             }
         }
         fetchService();
@@ -55,7 +55,7 @@ function Service() {
             );
             handleClose();
         } catch (error) {
-            console.log("Errore nella modifica del servizio", error);
+            console.error("Errore nella modifica del servizio", error);
         }
     };
 

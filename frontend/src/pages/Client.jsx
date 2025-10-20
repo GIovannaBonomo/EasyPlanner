@@ -58,7 +58,7 @@ function Client() {
             );
             handleClose();
         } catch (error) {
-            console.log("Errore nella modifica del cliente", error);
+            console.error("Errore nella modifica del cliente", error);
         }
     };
 

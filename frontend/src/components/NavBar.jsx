@@ -37,12 +37,12 @@ function NavBar({ isAuth, setIsAuth }) {
           </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto d-flex flex-column text-center w-100">
+          <Nav className="me-auto d-flex w-100">
             <Nav.Link href="/">Calendario</Nav.Link>
             <Nav.Link href="/service">Servizi</Nav.Link>
             <Nav.Link href="/client">Clienti</Nav.Link>
           </Nav>
-
+        
           <Form className="d-flex align-items-center">
             <Row className="g-2 align-items-center">
               <Col xs="auto">

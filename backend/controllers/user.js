@@ -3,15 +3,23 @@ import User from "../models/User.js";
 
 
 export async function register(req, res, next) {
-  console.log("Body ricevuto:", req.body);
 
   try {
-    const { email, password} = req.body;
-    console.log(req.file);
+    const { email, password } = req.body;
+
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Email non valida." });
+    }
 
     const existing = await User.findOne({ email });
     if (existing) {
       return res.status(400).json({ message: "Email già registrata" });
+    }
+
+    const passwordRegex = /^(?=[A-Z])(?=.*[0-9]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({ message: "Password non valida. Deve avere almeno 8 caratteri, iniziare con maiuscola e contenere almeno un numero" });
     }
 
     const newUser = new User({

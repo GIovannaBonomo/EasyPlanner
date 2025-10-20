@@ -18,9 +18,10 @@ function Register() {
       alert("Registrazione avvenuta con successo!");
       navigate("/login");
     }
-    catch (err) {
-      console.log(err);
-      alert("Errore durante la registrazione.");
+    catch (error) {
+      console.error(error);
+      const errorMessage = error.response?.data?.message || "Errore durante la registrazione!";
+        alert(errorMessage);
     }
 
   }

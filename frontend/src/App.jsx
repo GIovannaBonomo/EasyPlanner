@@ -41,7 +41,7 @@ function App() {
         <Route path='/home' element={isAuth ? <Home /> : <Navigate to="/" />} />
         <Route path='/login' element={isAuth ? <Navigate to="/home" /> : <Login setIsAuth={setIsAuth} />} />
         <Route path='/register' element={<Register />} />
-        <Route path="/login/success" element={<GoogleLogin />}/>
+        <Route path="/login/success" element={<GoogleLogin setIsAuth={setIsAuth} />}/>
         <Route path='/client' element={<Client />} />
         <Route path='/service' element={<Service />} />
         <Route path='/service/addService' element={<AddService />} />

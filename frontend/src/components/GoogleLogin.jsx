@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function GoogleLogin() {
+function GoogleLogin({setIsAuth}) {
 
   const navigate = useNavigate();
 
@@ -12,8 +12,9 @@ function GoogleLogin() {
 
     if (token) {
       localStorage.setItem("token", token);
-      navigate("/"); 
+      setIsAuth(true);
       alert("Login effettuato con successo!");
+      navigate("/home"); 
     } else {
       navigate("/");
     }

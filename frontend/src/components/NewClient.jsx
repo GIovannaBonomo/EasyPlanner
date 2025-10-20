@@ -22,7 +22,7 @@ function NewClient({ show, handleClose, onCreate }) {
       handleClose();
       setClient({ name: "", email: "", number: "" })
     } catch (error) {
-      console.log("errore nella creazione del cliente", error)
+      console.error("errore nella creazione del cliente", error)
     }
   }
 
