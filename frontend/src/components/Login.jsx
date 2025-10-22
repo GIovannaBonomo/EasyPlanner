@@ -35,7 +35,7 @@ function Login({ setIsAuth }) {
         <Col md={8} className="d-none d-md-block">
           <img src={sfondo} alt="ragazza-con-computer" style={{ width: '100%', height: 'auto'}}/>
         </Col>
-        <Col xs={12} md={4} className="d-flex justify-content-center align-item-center" >
+        <Col xs={12} md={4} className="d-flex justify-content-center" >
           <div >
             <form onSubmit={handleLogin} className="p-4 rounded shadow" style={{ maxWidth: '400px', width: '100%', backgroundColor: '#f8f9fa' }}>
               <button

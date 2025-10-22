@@ -36,7 +36,7 @@ function Register() {
         <Col md={8} className="d-none d-md-block">
           <img src={sfondo} alt="ragazza-con-computer" style={{ width: '100%', height: 'auto' }} />
         </Col>
-        <Col xs={12} md={4} className="d-flex justify-content-center align-item-center" >
+        <Col xs={12} md={4} className="d-flex justify-content-center" >
           <div>
             <form
               onSubmit={handleRegister}

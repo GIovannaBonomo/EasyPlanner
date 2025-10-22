@@ -4,7 +4,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { Container } from 'react-bootstrap'
 import itLocale from '@fullcalendar/core/locales/it'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import NewAppointment from '../components/NewAppointment'
 import { getAppointment, putAppointment } from '../../data/appointments'
 import EditAppointment from '../components/EditAppointment'
@@ -17,7 +17,6 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [selectAppointments, setSelectAppointments] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
-
 
   async function fetchAppointments() {
     try {
@@ -60,13 +59,32 @@ function Home() {
     setShowModal(true);
   };
 
+  const calendarRef = useRef(null);
+
   return (
     <Container className="mb-5 background-color">
+      <div className='m-3'>
+        <label>
+          Seleziona una data:{' '}
+          <input
+            type="date"
+            onChange={(e) => {
+              const selected = e.target.value;
+              if (calendarRef.current) {
+                calendarRef.current.getApi().gotoDate(selected);
+              }
+              e.target.value = '';
+            }}
+            placeholder="gg/mm/aaaa"
+          />
+        </label>
+      </div>
       <FullCalendar
+        ref={calendarRef}
         plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
         initialView="timeGridWeek"  // settimana con fasce orarie
         headerToolbar={{
-          left: 'prev,next',
+          left: 'prev,next,today',
           center: 'title',
           right: 'timeGridDay,timeGridWeek' // switch tra giorno e settimana
         }}
