@@ -14,8 +14,14 @@ import strategy from './passport-config.js';
 const port = process.env.PORT || 5000;
 const server = express();
 
-server.use(cors()); 
+server.use(cors({
+  origin: process.env.FRONTEND_HOST,
+  credentials: true
+}));
+
 server.use(express.json()); 
+
+server.use(passport.initialize());
 
 passport.use(strategy);
 
