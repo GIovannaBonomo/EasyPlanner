@@ -1,16 +1,30 @@
-# React + Vite
+# EasyPlanner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descrizione
+EasyPlanner è un'applicazione web pensata per gestire in modo semplice ed efficace le attività e i dati di un'organizzazione.  
+Permette di accedere tramite login tradizionale o autenticazione Google e offre un'interfaccia moderna e responsiva, ottimizzata sia per desktop che per dispositivi mobili.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Funzionalità principali
+- Login e Register sicuro con email/password o Google OAuth2
+- Calendario con appuntamenti
+- Creazione, modifica e cancellazione degli appuntamenti, dei clienti e dei servizi che si vogliono offrire
+- Invio email al cliente quando viene fissato l'appuntamento
+- Interfaccia responsive per dispositivi piccoli e grandi
 
-## React Compiler
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tecnologie utilizzate
+- **Frontend:** React, React Bootstrap
+- **Gestione stato:** useState
+- **Routing:** React Router
+- **HTTP Requests:** Axios
+- **Stile:** CSS personalizzato con variabili per colori e temi
+- **Autenticazione:** JWT e Google OAuth2
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Design
+- Immagine e form di login/gestione
+- Box centrato su dispositivi mobili
+- Pulsanti colorati coerenti con il tema principale
+
+
