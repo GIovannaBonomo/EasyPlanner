@@ -86,7 +86,7 @@ function Home() {
         headerToolbar={{
           left: 'prev,next,today',
           center: 'title',
-          right: 'timeGridDay,timeGridWeek' // switch tra giorno e settimana
+          right: window.innerWidth < 576 ? '' : 'timeGridDay,timeGridWeek' // switch tra giorno e settimana     
         }}
         slotMinTime="08:00:00"
         slotMaxTime="18:00:00"

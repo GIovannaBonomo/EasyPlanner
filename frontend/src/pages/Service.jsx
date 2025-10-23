@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { deleteService, getService, putService } from "../../data/service";
-import { Button, Container, Form, InputGroup, Modal, Row, Table } from "react-bootstrap";
-import AddService from "../components/AddService.jsx";
+import { Button, Col, Container, Form, InputGroup, Modal, Row, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 function Service() {
@@ -71,7 +70,8 @@ function Service() {
         </Button>
       </div>
             <Row>
-                <Table striped bordered hover>
+                <Col xs={12}>
+                <Table striped bordered hover className="d-none d-sm-table">
                     <thead>
                         <tr className="text-center">
                             <th>Nome</th>
@@ -103,6 +103,38 @@ function Service() {
                             </tr>))}
                     </tbody>
                 </Table>
+                 <div className="d-block d-sm-none">
+            {service.map((s) => (
+              <div
+                key={s._id}
+                className="card mb-2 p-2 shadow-sm"
+                style={{ borderRadius: "0.3rem" }}
+              >
+                <p>
+                  <strong>Nome</strong> {s.name}
+                </p>
+                <p>
+                  <strong>Durata</strong> {s.duration}
+                </p>
+                <p>
+                  <strong>Prezzo</strong> {s.price}
+                </p>
+                <div className="d-flex justify-content-end gap-3">
+                  <i
+                    className="bi bi-pencil-square"
+                    role="button"
+                    onClick={() => handleShow(s)}
+                  ></i>
+                  <i
+                    className="bi bi-x-square-fill text-danger"
+                    role="button"
+                    onClick={() => handleDeleteService(s._id)}
+                  ></i>
+                </div>
+              </div>
+            ))}
+          </div>
+                </Col>
             </Row>
 
             <Modal show={show} onHide={handleClose}>

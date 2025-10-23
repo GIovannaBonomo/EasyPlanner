@@ -86,8 +86,8 @@ function Client() {
                             <th>Nome e Cognome</th>
                             <th>Email</th>
                             <th>Numero di telefono</th>
-                            <th>Mod</th>
-                            <th>El</th>
+                            <th>Modifica</th>
+                            <th>Elimina</th>
                         </tr>
                     </thead>
                     <tbody className="text-center">
