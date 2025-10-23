@@ -12,6 +12,7 @@ import Service from './pages/Service';
 import AddService from './components/AddService';
 import GoogleLogin from './components/GoogleLogin.jsx';
 import './style.css';
+import Error from './pages/Error.jsx';
 
 function AppWrapper() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path='/client' element={<Client />} />
         <Route path='/service' element={<Service />} />
         <Route path='/service/addService' element={<AddService />} />
+        <Route path='*' element={<Error />}/>
       </Routes>
        {!hideNavAndFooter && <Footer />}
        </>
