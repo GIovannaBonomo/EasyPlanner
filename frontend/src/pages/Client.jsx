@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Button, Container, Form, Modal, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
 import { deleteClient, getClient, putClient } from "../../data/client";
 import NewClient from "../components/NewClient";
 
@@ -79,14 +79,15 @@ function Client() {
                 onCreate={fetchClients} 
             />
             <Row>
-                <Table striped bordered hover>
+                <Col xs={12}>
+                <Table striped bordered hover className="d-none d-sm-table">
                     <thead>
                         <tr className="text-center">
                             <th>Nome e Cognome</th>
                             <th>Email</th>
                             <th>Numero di telefono</th>
-                            <th>Modifica</th>
-                            <th>Elimina</th>
+                            <th>Mod</th>
+                            <th>El</th>
                         </tr>
                     </thead>
                     <tbody className="text-center">
@@ -111,6 +112,38 @@ function Client() {
                             </tr>))}
                     </tbody>
                 </Table>
+               <div className="d-block d-sm-none">
+            {client.map((c) => (
+              <div
+                key={c._id}
+                className="card mb-2 p-2 shadow-sm"
+                style={{ borderRadius: "0.3rem" }}
+              >
+                <p>
+                  <strong>Nome e Cognome:</strong> {c.name}
+                </p>
+                <p>
+                  <strong>Email:</strong> {c.email}
+                </p>
+                <p>
+                  <strong>Numero di telefono:</strong> {c.number}
+                </p>
+                <div className="d-flex justify-content-end gap-3">
+                  <i
+                    className="bi bi-pencil-square"
+                    role="button"
+                    onClick={() => handleShow(c)}
+                  ></i>
+                  <i
+                    className="bi bi-x-square-fill text-danger"
+                    role="button"
+                    onClick={() => handleDeleteClient(c._id)}
+                  ></i>
+                </div>
+              </div>
+            ))}
+          </div>
+                </Col>
             </Row>
 
             <Modal show={show}>
